@@ -42,11 +42,10 @@ class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDe
     
     @IBOutlet weak var weatherIconImageView: UIImageView!
     
-    @IBOutlet weak var temperatureUnitSwitch: UISwitch!
-    
     private let locationManager = CLLocationManager()
     private var weatherData: WeatherData?
     private var isTemperatureInCelsius = true
+    private var tempInCal = ""
     
     private let apiKey = "af317184cf164ed48f1225825232607"
     
@@ -130,10 +129,19 @@ class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDe
     }
     
     
-    @IBAction func temperatureUnitSwitchValueChanged(_ sender: UISwitch) {
-        isTemperatureInCelsius = sender.isOn
-        if let weatherData = weatherData {
-            updateTemperatureLabel(with: weatherData)
+    @IBAction func unitSwitchValueChanged(_ sender: UISegmentedControl) {
+        print("Value \(sender.selectedSegmentIndex)")
+        
+        if let currentTemp = Double(tempInCal) {
+            print("Current temp \(currentTemp)")
+            if sender.selectedSegmentIndex == 0 { // Celsius to Fahrenheit
+                temperatureLabel.text = String(currentTemp * 9/5 + 32)
+            } else { // Fahrenheit to Celsius
+                temperatureLabel.text = String(currentTemp)
+            }
+        } else {
+            print("Something is wrong")
+            return
         }
     }
     
@@ -183,12 +191,8 @@ class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDe
             self.weatherConditionLabel.text = String(current.condition.text)
             self.temperatureLabel.text = String(current.temp_c)
             self.changeImage(code: current.condition.code)
+            self.tempInCal = String(current.temp_c)
         }
-        //        locationLabel.text = weatherData.locationName
-        //        updateTemperatureLabel(with: weatherData)
-        //        weatherConditionLabel.text = weatherData.weatherCondition
-        //        weatherIconImageView.image = UIImage(systemName: "\(weatherData.weatherIconCode).circle")
-        //        weatherIconImageView.tintColor = UIColor.systemOrange
     }
     
     func changeImage(code: Int) {
@@ -208,23 +212,6 @@ class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDe
             self.weatherIconImageView.image = UIImage(systemName: "cloud.fog")
         default:
             self.weatherIconImageView.image = UIImage(systemName: "cloud")
-        }
-    }
-    
-    func updateTemperatureLabel(with weatherData: WeatherData) {
-        if isTemperatureInCelsius {
-            temperatureLabel.text = "\(weatherData.temperatureCelsius)°C"
-        } else {
-            temperatureLabel.text = "\(weatherData.temperatureFahrenheit)°F"
-        }
-    }
-    
-    //HELPER METHODS
-    func openAppSettings() {
-        guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
-        
-        if UIApplication.shared.canOpenURL(settingsURL) {
-            UIApplication.shared.open(settingsURL)
         }
     }
     
