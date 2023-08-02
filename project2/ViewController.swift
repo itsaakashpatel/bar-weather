@@ -78,7 +78,7 @@ class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDe
             locationManager.stopUpdatingLocation()
             
         
-        fetchWeatherData(for: location.coordinate.latitude, and: location.coordinate.longitude)
+      //  fetchWeatherData(for: location.coordinate.latitude, and: location.coordinate.longitude)
         
         }
     
@@ -110,7 +110,7 @@ class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDe
              }
              
              // Fetch weather data for the obtained location coordinates
-             self.fetchWeatherData(for: location.coordinate.latitude, and: location.coordinate.longitude)
+//             self.fetchWeatherData(for: location.coordinate.latitude, and: location.coordinate.longitude)
          }
          
          searchBar.resignFirstResponder()
@@ -126,56 +126,56 @@ class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDe
     
     
     
-    func fetchWeatherData(for latitude: Double, and longitude: Double) {
-        let apiKey = "af317184cf164ed48f1225825232607"
-        let baseUrl = "https://api.weatherapi.com/v1/current.json"
-        let urlString = "\(baseUrl)?key=\(apiKey)&q=\(latitude),\(longitude)"
-
-        guard let url = URL(string: urlString) else {
-            return
-        }
-
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-                return
-            }
-
-            guard let data = data else {
-                print("Error: Data is empty.")
-                return
-            }
-
-            do {
-                let decoder = JSONDecoder()
-                let weatherResponse = try decoder.decode(WeatherApiResponse.self, from: data)
-
-                if let locationName = weatherResponse.location.name,
-               let temperatureCelsius = weatherResponse.current.tempC,
-               let temperatureFahrenheit = weatherResponse.current.tempF,
-               let weatherCondition = weatherResponse.current.condition.text,
-               let weatherIconCode = weatherResponse.current.condition.code {
-
-                let weatherData = WeatherData(
-                    locationName: locationName,
-                    temperatureCelsius: temperatureCelsius,
-                    temperatureFahrenheit: temperatureFahrenheit,
-                    weatherCondition: weatherCondition,
-                    weatherIconCode: weatherIconCode
-                                )
-                    
-                    DispatchQueue.main.async {
-                        self.weatherData = weatherData
-                        self.updateUI(with: weatherData)
-                    }
-                } else {
-                    print("Error: Weather data is missing.")
-                }
-            } catch {
-                print("Error parsing JSON: \(error.localizedDescription)")
-            }
-        }.resume()
-    }
+//    func fetchWeatherData(for latitude: Double, and longitude: Double) {
+//        let apiKey = "af317184cf164ed48f1225825232607"
+//        let baseUrl = "https://api.weatherapi.com/v1/current.json"
+//        let urlString = "\(baseUrl)?key=\(apiKey)&q=\(latitude),\(longitude)"
+//
+//        guard let url = URL(string: urlString) else {
+//            return
+//        }
+//
+//        URLSession.shared.dataTask(with: url) { data, response, error in
+//            if let error = error {
+//                print("Error: \(error.localizedDescription)")
+//                return
+//            }
+//
+//            guard let data = data else {
+//                print("Error: Data is empty.")
+//                return
+//            }
+//
+//            do {
+//                let decoder = JSONDecoder()
+//                let weatherResponse = try decoder.decode(WeatherApiResponse.self, from: data)
+//
+//                if let locationName = weatherResponse.location.name,
+//               let temperatureCelsius = weatherResponse.current.tempC,
+//               let temperatureFahrenheit = weatherResponse.current.tempF,
+//               let weatherCondition = weatherResponse.current.condition.text,
+//               let weatherIconCode = weatherResponse.current.condition.code {
+//
+//                let weatherData = WeatherData(
+//                    locationName: locationName,
+//                    temperatureCelsius: temperatureCelsius,
+//                    temperatureFahrenheit: temperatureFahrenheit,
+//                    weatherCondition: weatherCondition,
+//                    weatherIconCode: weatherIconCode
+//                                )
+//
+//                    DispatchQueue.main.async {
+//                        self.weatherData = weatherData
+//                        self.updateUI(with: weatherData)
+//                    }
+//                } else {
+//                    print("Error: Weather data is missing.")
+//                }
+//            } catch {
+//                print("Error parsing JSON: \(error.localizedDescription)")
+//            }
+//        }.resume()
+//    }
 
 
         

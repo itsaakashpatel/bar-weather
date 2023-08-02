@@ -2,7 +2,8 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -65,6 +66,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C63-Hl-7Lp">
+                                <rect key="frame" x="20" y="195" width="67" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="0.0" green="0.58823529409999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Cities"/>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.5740832390648567" green="0.78357232534622245" blue="0.82389041718085831" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -84,9 +92,86 @@
             </objects>
             <point key="canvasLocation" x="101.5267175572519" y="3.5211267605633805"/>
         </scene>
+        <!--Cities View Controller-->
+        <scene sceneID="Dz4-kn-wlB">
+            <objects>
+                <viewController restorationIdentifier="CitiesViewController" storyboardIdentifier="CitiesViewController" id="ry8-mR-hML" customClass="CitiesViewController" customModule="project2" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xbX-NM-n8Z">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="hLL-zp-z3y">
+                                <rect key="frame" x="0.0" y="159" width="393" height="659"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="CityTableViewCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CityTableViewCell" id="vtI-GW-geG" customClass="CityTableViewCell" customModule="project2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="63.333332061767578"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vtI-GW-geG" id="CGe-Tm-3uG">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="63.333332061767578"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SfB-kZ-oqT">
+                                                    <rect key="frame" x="39.999999999999993" y="21" width="79.333333333333314" height="21.333333333333329"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qwt-r0-39D">
+                                                    <rect key="frame" x="333" y="12" width="40.666666666666686" height="38.666666666666671"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="E3H-FU-5GZ"/>
+                                                        <constraint firstAttribute="width" constant="40" id="b63-KT-KNW"/>
+                                                    </constraints>
+                                                    <imageReference key="image" image="cloud.sun.fill" catalog="system" renderingMode="original"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.90000000000000002" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="SfB-kZ-oqT" firstAttribute="top" secondItem="CGe-Tm-3uG" secondAttribute="topMargin" constant="10" id="AmJ-sG-dg6"/>
+                                                <constraint firstAttribute="trailing" secondItem="qwt-r0-39D" secondAttribute="trailing" constant="20" id="GGG-iY-pKn"/>
+                                                <constraint firstItem="qwt-r0-39D" firstAttribute="centerY" secondItem="CGe-Tm-3uG" secondAttribute="centerY" id="Jnv-HK-UaU"/>
+                                                <constraint firstItem="SfB-kZ-oqT" firstAttribute="leading" secondItem="CGe-Tm-3uG" secondAttribute="leadingMargin" constant="20" id="WfZ-VD-bm6"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="SfB-kZ-oqT" secondAttribute="bottom" constant="10" id="Z4U-T6-5Df"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="cityNameLabel" destination="SfB-kZ-oqT" id="vHJ-Ar-Qrj"/>
+                                            <outlet property="cityWeatherLabel" destination="qwt-r0-39D" id="FiJ-3j-OYj"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saved Cities" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EKY-Tq-gDI">
+                                <rect key="frame" x="20" y="79" width="166.33333333333334" height="37"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="31"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="z59-Ci-kbM"/>
+                        <color key="backgroundColor" red="0.46274509800000002" green="0.83921568629999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="EKY-Tq-gDI" firstAttribute="top" secondItem="z59-Ci-kbM" secondAttribute="top" constant="20" id="23i-uH-IQX"/>
+                            <constraint firstItem="z59-Ci-kbM" firstAttribute="bottom" secondItem="hLL-zp-z3y" secondAttribute="bottom" id="2CG-pq-zoa"/>
+                            <constraint firstItem="hLL-zp-z3y" firstAttribute="leading" secondItem="z59-Ci-kbM" secondAttribute="leading" id="O9e-SA-APJ"/>
+                            <constraint firstItem="z59-Ci-kbM" firstAttribute="trailing" secondItem="hLL-zp-z3y" secondAttribute="trailing" id="XHe-OY-FBV"/>
+                            <constraint firstItem="EKY-Tq-gDI" firstAttribute="leading" secondItem="z59-Ci-kbM" secondAttribute="leading" constant="20" id="aoX-33-Xfw"/>
+                            <constraint firstItem="hLL-zp-z3y" firstAttribute="top" secondItem="z59-Ci-kbM" secondAttribute="top" constant="100" id="f8D-TT-0Jl"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="hLL-zp-z3y" id="pyy-BI-Rbt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EaO-lg-fPS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="865" y="4"/>
+        </scene>
     </scenes>
     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
     <resources>
         <image name="cloud.fill" catalog="system" width="128" height="87"/>
+        <image name="cloud.sun.fill" catalog="system" width="128" height="96"/>
     </resources>
 </document>
