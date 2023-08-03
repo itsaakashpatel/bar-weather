@@ -32,6 +32,7 @@ struct SearchApiResponse: Codable {
     let lat: Double
     let lon: Double
     let name: String
+    let region: String
 }
 
 
@@ -189,20 +190,26 @@ CLLocationManagerDelegate {
         }
     }
     
+    func encodeURL(url : String) -> String? {
+        let allowedCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
+        return url.addingPercentEncoding(withAllowedCharacters: allowedCharacters)
+    }
+    
     func fetchWeatherData(for latitude: Double?, and longitude: Double?, loc location: String?) {
         
         var urlString = ""
         let baseUrl = "https://api.weatherapi.com/v1/current.json"
         if let latitude = latitude, let longitude = longitude {
             urlString = "\(baseUrl)?key=\(apiKey)&q=\(latitude),\(longitude)"
-        } else if let location = location {
+        } else if let loc = location, let location = encodeURL(url:loc) {
             urlString = "\(baseUrl)?key=\(apiKey)&q=\(location)"
         }
         
-        print(urlString)
         guard let url = URL(string: urlString) else {
             return
         }
+        
+        print("\(urlString)")
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
@@ -282,7 +289,7 @@ CLLocationManagerDelegate {
                 var searchData: [String] = []
                 
                 for item in weatherResponse {
-                    searchData.append(item.name)
+                    searchData.append(item.name + ", " + item.region)
                 }
                 
                 print("Seaarch data \(searchData)")
