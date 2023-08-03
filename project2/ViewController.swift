@@ -43,10 +43,7 @@ struct LocationInfo {
     let condition: String
 }
 
-
-class ViewController: UIViewController, UISearchBarDelegate,
-                      UITableViewDelegate, UITableViewDataSource,
-CLLocationManagerDelegate {
+class ViewController: UIViewController, UISearchBarDelegate,UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -71,7 +68,7 @@ CLLocationManagerDelegate {
     
     private var searchResults: [String] = []
     
-    private var finalLocations: [LocationInfo] = []
+    private var finalLocations: [String: LocationInfo] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -246,9 +243,10 @@ CLLocationManagerDelegate {
                 print(weatherResponse.current)
                 
                 //push to final locations array
-                let locationData = LocationInfo(name: weatherResponse.location.name, tempC: weatherResponse.current.temp_c, tempF: weatherResponse.current.temp_f, code: weatherResponse.current.condition.code, condition: weatherResponse.current.condition.text)
+                let itemId = weatherResponse.location.name.lowercased()
+                let locationData = LocationInfo( name: weatherResponse.location.name, tempC: weatherResponse.current.temp_c, tempF: weatherResponse.current.temp_f, code: weatherResponse.current.condition.code, condition: weatherResponse.current.condition.text)
                 
-                self.finalLocations.append(locationData)
+                self.finalLocations[itemId] = locationData
                 
                 let location = weatherResponse.location
                 let current = weatherResponse.current
