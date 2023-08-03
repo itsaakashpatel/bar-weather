@@ -72,6 +72,13 @@ class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDe
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "gotoCity" {
+            guard let vc = segue.destination as? CityViewController else { return }
+            vc.cityListName = [] // ADD CITY NAME
+        }
+    }
+    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         let status = manager.authorizationStatus
         print("Current location status \(status.rawValue)")
