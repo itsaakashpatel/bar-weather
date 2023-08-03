@@ -35,6 +35,14 @@ struct SearchApiResponse: Codable {
     let region: String
 }
 
+struct LocationInfo {
+    let name: String
+    let tempC: Double
+    let tempF: Double
+    let code: Int
+    let condition: String
+}
+
 
 class ViewController: UIViewController, UISearchBarDelegate,
                       UITableViewDelegate, UITableViewDataSource,
@@ -63,6 +71,8 @@ CLLocationManagerDelegate {
     
     private var searchResults: [String] = []
     
+    private var finalLocations: [LocationInfo] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -78,8 +88,6 @@ CLLocationManagerDelegate {
     }
     
     @IBAction func locationButtonTapped(_ sender: UIButton) {
-        
-        print("Login button tapped")
         locationManager.startUpdatingLocation()
         
     }
@@ -230,8 +238,15 @@ CLLocationManagerDelegate {
                 print(weatherResponse.location)
                 print(weatherResponse.current)
                 
+                //push to final locations array
+                let locationData = LocationInfo(name: weatherResponse.location.name, tempC: weatherResponse.current.temp_c, tempF: weatherResponse.current.temp_f, code: weatherResponse.current.condition.code, condition: weatherResponse.current.condition.text)
+                
+                self.finalLocations.append(locationData)
+                
                 let location = weatherResponse.location
                 let current = weatherResponse.current
+                
+                print("final locations counts \(self.finalLocations.count) , \(self.finalLocations)")
                 
                 self.updateUI(location: location, current: current)
                 
