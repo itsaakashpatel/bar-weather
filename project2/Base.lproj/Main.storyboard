@@ -186,7 +186,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="oGh-mT-0Zx">
-                                <rect key="frame" x="0.0" y="60" width="393" height="782"/>
+                                <rect key="frame" x="0.0" y="116" width="393" height="726"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="CityTableViewCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CityTableViewCell" id="6qy-h0-i1W" customClass="CityTableViewCell" customModule="project2" customModuleProvider="target">
@@ -227,8 +227,8 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saved cities" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mMP-Ja-345">
-                                <rect key="frame" x="48" y="20" width="171" height="40"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saved cities" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mMP-Ja-345">
+                                <rect key="frame" x="16" y="68" width="171" height="40"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="33"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -237,12 +237,12 @@
                         <viewLayoutGuide key="safeArea" id="5Lm-Ui-hkp"/>
                         <color key="backgroundColor" red="0.5725490196078431" green="0.78431372549019607" blue="0.82352941176470584" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="mMP-Ja-345" firstAttribute="leading" secondItem="5Lm-Ui-hkp" secondAttribute="leading" constant="48" id="1SG-s8-cKr"/>
-                            <constraint firstItem="mMP-Ja-345" firstAttribute="top" secondItem="5Lm-Ui-hkp" secondAttribute="top" constant="20" id="7qM-fB-Cvw"/>
+                            <constraint firstItem="mMP-Ja-345" firstAttribute="leading" secondItem="5Lm-Ui-hkp" secondAttribute="leading" constant="16" id="1SG-s8-cKr"/>
+                            <constraint firstItem="mMP-Ja-345" firstAttribute="top" secondItem="5Lm-Ui-hkp" secondAttribute="top" constant="68" id="7qM-fB-Cvw"/>
                             <constraint firstItem="oGh-mT-0Zx" firstAttribute="bottom" secondItem="5Lm-Ui-hkp" secondAttribute="bottom" id="GR9-nl-l7d"/>
                             <constraint firstAttribute="trailing" secondItem="oGh-mT-0Zx" secondAttribute="trailing" id="NzW-gN-rhQ"/>
                             <constraint firstItem="oGh-mT-0Zx" firstAttribute="leading" secondItem="5Lm-Ui-hkp" secondAttribute="leading" id="PVA-St-Vhg"/>
-                            <constraint firstItem="oGh-mT-0Zx" firstAttribute="top" secondItem="mMP-Ja-345" secondAttribute="bottom" id="u5V-Zz-uzo"/>
+                            <constraint firstItem="oGh-mT-0Zx" firstAttribute="top" secondItem="mMP-Ja-345" secondAttribute="bottom" constant="8" id="u5V-Zz-uzo"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="mih-FC-B2o"/>
@@ -258,6 +258,7 @@
     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
     <resources>
         <image name="cloud.fill" catalog="system" width="128" height="87"/>
+        <image name="cloud.sun.fill" catalog="system" width="128" height="96"/>
         <image name="magnifyingglass" catalog="system" width="128" height="117"/>
         <image name="navigation" width="170.66667175292969" height="170.66667175292969"/>
         <systemColor name="systemBackgroundColor">

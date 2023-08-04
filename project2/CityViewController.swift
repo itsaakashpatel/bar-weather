@@ -12,6 +12,7 @@ class CityViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var cityListTableView: UITableView!
     
     var finalLocations: [String: LocationInfo] = [:]
+    var isTemperatureInCelsius = true
     var newDataSource = [LocationInfo]()
     
     override func viewDidLoad() {
@@ -21,6 +22,7 @@ class CityViewController: UIViewController, UITableViewDelegate, UITableViewData
         finalLocations.forEach { data in
             newDataSource.append(data.value)
         }
+        print("isTemperatureInCelsius \(isTemperatureInCelsius)")
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -34,7 +36,8 @@ class CityViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         let cityName = newDataSource[indexPath.row].name
         let cityTemp = newDataSource[indexPath.row].tempC
-        cell.cityName.text =  cityName + " " + "\(cityTemp)"
+        let cityTempInF = newDataSource[indexPath.row].tempF
+        cell.cityName.text =  cityName + " " + "\(isTemperatureInCelsius ? cityTemp : cityTempInF)" + "\(isTemperatureInCelsius ? " C" : " F")"
         cell.weatherImageView.image = changeImage(code:  newDataSource[indexPath.row].code)
         return cell
     }
