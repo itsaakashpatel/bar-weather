@@ -92,7 +92,7 @@ class ViewController: UIViewController, UISearchBarDelegate,UITableViewDelegate,
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "gotoCity" {
             guard let vc = segue.destination as? CityViewController else { return }
-            vc.cityListName = [] // ADD CITY NAME
+            vc.finalLocations = finalLocations
         }
     }
   
@@ -100,6 +100,7 @@ class ViewController: UIViewController, UISearchBarDelegate,UITableViewDelegate,
         fetchWeatherData(for: nil, and: nil, loc: searchBar.text)
         searchTableView.isHidden = true
         searchBar.text = ""
+        searchBar.resignFirstResponder()
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
