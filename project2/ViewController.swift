@@ -43,10 +43,7 @@ struct LocationInfo {
     let condition: String
 }
 
-
-class ViewController: UIViewController, UISearchBarDelegate,
-                      UITableViewDelegate, UITableViewDataSource,
-CLLocationManagerDelegate {
+class ViewController: UIViewController, UISearchBarDelegate,UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -71,7 +68,7 @@ CLLocationManagerDelegate {
     
     private var searchResults: [String] = []
     
-    private var finalLocations: [LocationInfo] = []
+    private var finalLocations: [String: LocationInfo] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,10 +89,19 @@ CLLocationManagerDelegate {
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "gotoCity" {
+            guard let vc = segue.destination as? CityViewController else { return }
+            vc.finalLocations = finalLocations
+            vc.isTemperatureInCelsius = isTemperatureInCelsius
+        }
+    }
+    
     @IBAction func searchTapped(_ sender: Any) {
         fetchWeatherData(for: nil, and: nil, loc: searchBar.text)
         searchTableView.isHidden = true
         searchBar.text = ""
+        searchBar.resignFirstResponder()
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -138,12 +144,11 @@ CLLocationManagerDelegate {
     
     
     
-    func searchBarSearchButtonClicked() {
+    func searchBarSearchButtonClicked(_ searchBar : UISearchBar) {
         guard let searchText = searchBar.text, !searchText.isEmpty else {
             return
         }
-        
-        // Use geocoding to get the location coordinates from the city name
+    
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(searchText) { placemarks, error in
             if let error = error {
@@ -159,6 +164,10 @@ CLLocationManagerDelegate {
             
         }
         
+        fetchWeatherData(for: nil, and: nil, loc: searchText)
+        //Stop table for search view and clear search text if any
+        searchTableView.isHidden = true
+        searchBar.text = ""
         searchBar.resignFirstResponder()
     }
     
@@ -169,17 +178,15 @@ CLLocationManagerDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath)
-                cell.textLabel?.text = searchResults[indexPath.row]
-                return cell
+        cell.textLabel?.text = searchResults[indexPath.row]
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            let selectedResult = searchResults[indexPath.row]
-            //  update the search bar text with the selected suggestion
-            searchBar.text = selectedResult
+        let selectedResult = searchResults[indexPath.row]
+        searchBar.text = selectedResult
         searchTableView.isHidden = true
-        fetchWeatherData(for: nil, and: nil, loc: selectedResult)
-        }
+    }
     
     
     @IBAction func unitSwitchValueChanged(_ sender: UISegmentedControl) {
@@ -189,8 +196,10 @@ CLLocationManagerDelegate {
             print("Current temp \(currentTemp)")
             if sender.selectedSegmentIndex == 0 { // Celsius to Fahrenheit
                 temperatureLabel.text = String(currentTemp * 9/5 + 32)
+                isTemperatureInCelsius = false
             } else { // Fahrenheit to Celsius
                 temperatureLabel.text = String(currentTemp)
+                isTemperatureInCelsius = true
             }
         } else {
             print("Something is wrong")
@@ -239,9 +248,10 @@ CLLocationManagerDelegate {
                 print(weatherResponse.current)
                 
                 //push to final locations array
-                let locationData = LocationInfo(name: weatherResponse.location.name, tempC: weatherResponse.current.temp_c, tempF: weatherResponse.current.temp_f, code: weatherResponse.current.condition.code, condition: weatherResponse.current.condition.text)
+                let itemId = weatherResponse.location.name.lowercased()
+                let locationData = LocationInfo( name: weatherResponse.location.name, tempC: weatherResponse.current.temp_c, tempF: weatherResponse.current.temp_f, code: weatherResponse.current.condition.code, condition: weatherResponse.current.condition.text)
                 
-                self.finalLocations.append(locationData)
+                self.finalLocations[itemId] = locationData
                 
                 let location = weatherResponse.location
                 let current = weatherResponse.current
@@ -261,7 +271,7 @@ CLLocationManagerDelegate {
         NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(fetchAutocompleteSuggestions(_:)), object: searchBar)
         
         // Delay the autocomplete request to avoid making API calls on every keystroke
-        self.perform(#selector(fetchAutocompleteSuggestions(_:)), with: searchBar, afterDelay: 0.5)
+        self.perform(#selector(fetchAutocompleteSuggestions(_:)), with: searchBar, afterDelay: 0.3)
         
         searchTableView.reloadData()
         searchTableView.isHidden = searchResults.isEmpty

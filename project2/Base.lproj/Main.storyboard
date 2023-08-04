@@ -3,6 +3,7 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -97,6 +98,9 @@
                                 <color key="tintColor" red="0.0" green="0.45882352939999999" blue="0.89019607840000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Click here to see all cities &gt;&gt;"/>
+                                <connections>
+                                    <segue destination="Fps-8e-bH0" kind="show" identifier="gotoCity" id="tbY-3r-RR5"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="cloudy" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cAM-Kz-Owq">
                                 <rect key="frame" x="83" y="163" width="226" height="32"/>
@@ -134,7 +138,7 @@
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" red="0.5740832390648567" green="0.78357232534622245" blue="0.82389041718085831" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.5725490196078431" green="0.78431372549019607" blue="0.82352941176470584" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="6RW-UZ-b3C" firstAttribute="top" secondItem="Fyv-UY-Ww3" secondAttribute="bottom" constant="98" id="4PY-gd-cIh"/>
@@ -173,14 +177,95 @@
             </objects>
             <point key="canvasLocation" x="101.5267175572519" y="3.5211267605633805"/>
         </scene>
+        <!--City View Controller-->
+        <scene sceneID="4u6-cc-gMc">
+            <objects>
+                <viewController id="Fps-8e-bH0" customClass="CityViewController" customModule="project2" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dqE-fn-jx2">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="oGh-mT-0Zx">
+                                <rect key="frame" x="0.0" y="116" width="393" height="726"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="CityTableViewCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CityTableViewCell" id="6qy-h0-i1W" customClass="CityTableViewCell" customModule="project2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="50.333332061767578"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6qy-h0-i1W" id="Gfy-9h-C40">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="50.333332061767578"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="InV-9Z-aDO">
+                                                    <rect key="frame" x="20" y="14.999999999999998" width="42" height="20.333333333333329"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KGa-r7-RZG">
+                                                    <rect key="frame" x="323" y="0.33333333333333215" width="50.666666666666686" height="49"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="50" id="b70-L2-eyT"/>
+                                                        <constraint firstAttribute="height" constant="50" id="kSr-tZ-8Q2"/>
+                                                    </constraints>
+                                                    <imageReference key="image" image="cloud.sun.fill" catalog="system" renderingMode="original"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                            <constraints>
+                                                <constraint firstItem="KGa-r7-RZG" firstAttribute="top" secondItem="Gfy-9h-C40" secondAttribute="top" id="7Gm-zg-13g"/>
+                                                <constraint firstItem="InV-9Z-aDO" firstAttribute="centerY" secondItem="Gfy-9h-C40" secondAttribute="centerY" id="EC5-hW-AVT"/>
+                                                <constraint firstAttribute="bottom" secondItem="KGa-r7-RZG" secondAttribute="bottom" id="IcF-Kx-Uy6"/>
+                                                <constraint firstItem="InV-9Z-aDO" firstAttribute="leading" secondItem="Gfy-9h-C40" secondAttribute="leading" constant="20" id="cy1-Fb-34C"/>
+                                                <constraint firstAttribute="trailing" secondItem="KGa-r7-RZG" secondAttribute="trailing" constant="20" id="sjp-2Y-d4M"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="cityName" destination="InV-9Z-aDO" id="KB1-7Z-Yne"/>
+                                            <outlet property="weatherImageView" destination="KGa-r7-RZG" id="dGa-Np-5ij"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saved cities" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mMP-Ja-345">
+                                <rect key="frame" x="16" y="68" width="171" height="40"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="5Lm-Ui-hkp"/>
+                        <color key="backgroundColor" red="0.5725490196078431" green="0.78431372549019607" blue="0.82352941176470584" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="mMP-Ja-345" firstAttribute="leading" secondItem="5Lm-Ui-hkp" secondAttribute="leading" constant="16" id="1SG-s8-cKr"/>
+                            <constraint firstItem="mMP-Ja-345" firstAttribute="top" secondItem="5Lm-Ui-hkp" secondAttribute="top" constant="68" id="7qM-fB-Cvw"/>
+                            <constraint firstItem="oGh-mT-0Zx" firstAttribute="bottom" secondItem="5Lm-Ui-hkp" secondAttribute="bottom" id="GR9-nl-l7d"/>
+                            <constraint firstAttribute="trailing" secondItem="oGh-mT-0Zx" secondAttribute="trailing" id="NzW-gN-rhQ"/>
+                            <constraint firstItem="oGh-mT-0Zx" firstAttribute="leading" secondItem="5Lm-Ui-hkp" secondAttribute="leading" id="PVA-St-Vhg"/>
+                            <constraint firstItem="oGh-mT-0Zx" firstAttribute="top" secondItem="mMP-Ja-345" secondAttribute="bottom" constant="8" id="u5V-Zz-uzo"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="mih-FC-B2o"/>
+                    <connections>
+                        <outlet property="cityListTableView" destination="oGh-mT-0Zx" id="475-dO-Xcr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4gB-Id-NJP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="849.61832061068696" y="3.5211267605633805"/>
+        </scene>
     </scenes>
     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
     <resources>
         <image name="cloud.fill" catalog="system" width="128" height="87"/>
+        <image name="cloud.sun.fill" catalog="system" width="128" height="96"/>
         <image name="magnifyingglass" catalog="system" width="128" height="117"/>
         <image name="navigation" width="170.66667175292969" height="170.66667175292969"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
