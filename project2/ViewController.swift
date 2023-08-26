@@ -28,8 +28,16 @@ struct Condition: Codable {
     let code: Int
 }
 
+struct SearchApiResponse: Codable {
+    let lat: Double
+    let lon: Double
+    let name: String
+}
 
-class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDelegate {
+
+class ViewController: UIViewController, UISearchBarDelegate,
+                      UITableViewDelegate, UITableViewDataSource,
+CLLocationManagerDelegate {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -42,12 +50,17 @@ class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDe
     
     @IBOutlet weak var weatherIconImageView: UIImageView!
     
+    @IBOutlet weak var searchTableView: UITableView!
+    
+    @IBOutlet weak var searchIcon: UIButton!
     private let locationManager = CLLocationManager()
     private var weatherData: WeatherData?
     private var isTemperatureInCelsius = true
     private var tempInCal = ""
     
     private let apiKey = "af317184cf164ed48f1225825232607"
+    
+    private var searchResults: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,14 +69,24 @@ class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDe
         searchBar.delegate = self
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
+        
+        searchTableView.delegate = self
+        searchTableView.dataSource = self
+        searchTableView.isHidden = true
+        
     }
-    
     
     @IBAction func locationButtonTapped(_ sender: UIButton) {
         
         print("Login button tapped")
         locationManager.startUpdatingLocation()
         
+    }
+    
+    @IBAction func searchTapped(_ sender: Any) {
+        fetchWeatherData(for: nil, and: nil, loc: searchBar.text)
+        searchTableView.isHidden = true
+        searchBar.text = ""
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -96,13 +119,17 @@ class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDe
         // Once the location is obtained, stop updating location to save battery
         locationManager.stopUpdatingLocation()
         
-        fetchWeatherData(for: latitude, and: longitude)
+        //Stop table for search view and clear search text if any
+        searchTableView.isHidden = true
+        searchBar.text = ""
+        
+        fetchWeatherData(for: latitude, and: longitude, loc: "")
         
     }
     
     
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked() {
         guard let searchText = searchBar.text, !searchText.isEmpty else {
             return
         }
@@ -121,12 +148,29 @@ class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDe
                 return
             }
             
-            // Fetch weather data for the obtained location coordinates
-            //            self.fetchWeatherData(for: location.coordinate.latitude, and: location.coordinate.longitude)
         }
         
         searchBar.resignFirstResponder()
     }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("searchResults \(searchResults.count)")
+        return searchResults.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath)
+                cell.textLabel?.text = searchResults[indexPath.row]
+                return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            let selectedResult = searchResults[indexPath.row]
+            //  update the search bar text with the selected suggestion
+            searchBar.text = selectedResult
+        searchTableView.isHidden = true
+        fetchWeatherData(for: nil, and: nil, loc: selectedResult)
+        }
     
     
     @IBAction func unitSwitchValueChanged(_ sender: UISegmentedControl) {
@@ -145,10 +189,15 @@ class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDe
         }
     }
     
-    func fetchWeatherData(for latitude: Double, and longitude: Double) {
+    func fetchWeatherData(for latitude: Double?, and longitude: Double?, loc location: String?) {
         
+        var urlString = ""
         let baseUrl = "https://api.weatherapi.com/v1/current.json"
-        let urlString = "\(baseUrl)?key=\(apiKey)&q=\(latitude),\(longitude)"
+        if let latitude = latitude, let longitude = longitude {
+            urlString = "\(baseUrl)?key=\(apiKey)&q=\(latitude),\(longitude)"
+        } else if let location = location {
+            urlString = "\(baseUrl)?key=\(apiKey)&q=\(location)"
+        }
         
         print(urlString)
         guard let url = URL(string: urlString) else {
@@ -178,22 +227,79 @@ class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDe
                 let current = weatherResponse.current
                 
                 self.updateUI(location: location, current: current)
+                
             } catch {
                 print("Error parsing JSON: \(error.localizedDescription)")
             }
         }.resume()
     }
     
-    
-    func updateUI(location: Location, current: CurrentWeather) {
-        DispatchQueue.main.async {
-            self.locationLabel.text = location.name
-            self.weatherConditionLabel.text = String(current.condition.text)
-            self.temperatureLabel.text = String(current.temp_c)
-            self.changeImage(code: current.condition.code)
-            self.tempInCal = String(current.temp_c)
-        }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // Make sure to cancel previous autocomplete requests to avoid multiple calls
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(fetchAutocompleteSuggestions(_:)), object: searchBar)
+        
+        // Delay the autocomplete request to avoid making API calls on every keystroke
+        self.perform(#selector(fetchAutocompleteSuggestions(_:)), with: searchBar, afterDelay: 0.5)
+        
+        searchTableView.reloadData()
+        searchTableView.isHidden = searchResults.isEmpty
     }
+    
+    @objc func fetchAutocompleteSuggestions(_ searchBar: UISearchBar) {
+        
+        print("Search func called")
+        
+        let autocompleteBaseUrl = "https://api.weatherapi.com/v1/search.json"
+        
+        guard let searchText = searchBar.text, !searchText.isEmpty else {
+            return
+        }
+        
+        let urlString = "\(autocompleteBaseUrl)?key=\(apiKey)&q=\(searchText)"
+        
+        print("Search url string \(urlString)")
+        
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print("Error in autocomplete API: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let data = data else {
+                print("Error: Data is empty.")
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            
+            do {
+                let weatherResponse: [SearchApiResponse] = try decoder.decode([SearchApiResponse].self, from: data)
+                
+                var searchData: [String] = []
+                
+                for item in weatherResponse {
+                    searchData.append(item.name)
+                }
+                
+                print("Seaarch data \(searchData)")
+                
+                // Update the search bar's suggestions list
+                DispatchQueue.main.async {
+                    self.searchResults = searchData
+                    self.searchTableView.reloadData()
+                }
+            } catch {
+                print("Error parsing autocomplete JSON: \(error.localizedDescription)")
+            }
+            
+        }.resume()
+        
+    }
+    
     
     func changeImage(code: Int) {
         //Change image based on given code
@@ -215,6 +321,15 @@ class ViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDe
         }
     }
     
+    func updateUI(location: Location, current: CurrentWeather) {
+        DispatchQueue.main.async {
+            self.locationLabel.text = location.name
+            self.weatherConditionLabel.text = String(current.condition.text)
+            self.temperatureLabel.text = String(current.temp_c)
+            self.changeImage(code: current.condition.code)
+            self.tempInCal = String(current.temp_c)
+        }
+    }
+    
 }
-
 
