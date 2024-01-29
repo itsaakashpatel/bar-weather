@@ -9,6 +9,12 @@ BarWeather is a robust iOS mobile app that provides you with daily weather forec
 - **Accurate Weather Display:** BarWeather presents weather information in an easy-to-read format, ensuring that you receive the details you need at a glance.
 - **Alerts and Notifications:**  Receive alerts and notifications about weather changes and important updates to help you plan your day effectively.
 
+## Why did I build this? 🤔
+
+Keen to expand my programming skills, I decided to learn Swift, a key language for iOS development.  Many weather apps were quite complex, and I saw an opportunity to simplify.  
+
+Thus, I created BarWeather as a project at Fanshawe College. Learning Swift while also striving for user-friendly design, I leveraged the REST Weather API and Firebase for reliable forecasts. Despite challenges, the development of BarWeather emphasized the power of continuous learning and creative problem-solving.
+ 
 ## Tech Stack
 ![Swift](https://img.shields.io/badge/swift-F54A2A?style=for-the-badge&logo=swift&logoColor=white) 
 ![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
